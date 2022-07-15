@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="">
+  <div class="goods-item" @click="goodClick">
+    <img v-lazy ='showImage'alt="" @load="imgLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -18,6 +18,21 @@
         default(){
           return {}
         }
+      }
+    },
+    computed:{
+      showImage(){
+        //判断那个有值就传哪个
+        return  this.goodsItem.image|| this.goodsItem.show.img
+      }
+    },
+    methods:{
+      imgLoad(){
+        this.$bus.$emit('imgload')
+      },
+      goodClick(){
+        //给路由传递iid 参数
+        this.$router.push('/detail'+this.goodsItem.iid)
       }
     }
   }
